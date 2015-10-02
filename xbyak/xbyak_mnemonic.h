@@ -1900,4 +1900,9 @@ void vpbroadcastq(const Xmm& x, const Reg64& r) { opVex(x, 0, r, T_66 | T_0F38 |
 #endif
 #endif
 void bndcu(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1a); }
-
+void bndcl(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1b); }
+void bndmk(const Bnd& bnd0, const Address &addr) { db(0xf3); opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
+void bndmov(const Address &addr, const Bnd &bnd0) { db(0x66); opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
+void bndmov(const Bnd &bnd0, const Address &addr) { db(0x66); opModRM(bnd0, addr, false, true, 0x0f, 0x1a); }
+void bndldx(const Bnd &bnd0, const Address &addr) { opModRM(bnd0, addr, false, true, 0x0f, 0x1a); }
+void bndstx(const Address &addr, const Bnd &bnd0) { opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
