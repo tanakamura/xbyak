@@ -1460,3 +1460,9 @@ void vpgatherqd(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1
 void vpgatherdq(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x90, 1, 0); }
 void vpgatherqq(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x91, 1, 1); }
 void bndcu(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1a); }
+void bndcl(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1b); }
+void bndmk(const Bnd& bnd0, const Address &addr) { db(0xf3); opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
+void bndmov(const Address &addr, const Bnd &bnd0) { db(0x66); opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
+void bndmov(const Bnd &bnd0, const Address &addr) { db(0x66); opModRM(bnd0, addr, false, true, 0x0f, 0x1a); }
+void bndldx(const Bnd &bnd0, const Address &addr) { opModRM(bnd0, addr, false, true, 0x0f, 0x1a); }
+void bndstx(const Address &addr, const Bnd &bnd0) { opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
