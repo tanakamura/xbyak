@@ -334,7 +334,8 @@ public:
 		MMX = 1 << 4,
 		XMM = 1 << 5,
 		FPU = 1 << 6,
-		YMM = 1 << 7
+		YMM = 1 << 7,
+		BND = 1 << 8
 	};
 	enum Code {
 #ifdef XBYAK64
@@ -362,6 +363,7 @@ public:
 	bool isMMX() const { return is(MMX); }
 	bool isXMM() const { return is(XMM); }
 	bool isYMM() const { return is(YMM); }
+	bool isBND() const { return is(BND); }
 	bool isREG(int bit = 0) const { return is(REG, bit); }
 	bool isMEM(int bit = 0) const { return is(MEM, bit); }
 	bool isFPU() const { return is(FPU); }
@@ -466,6 +468,11 @@ struct Ymm : public Xmm {
 struct Fpu : public Reg {
 	explicit Fpu(int idx = 0) : Reg(idx, Operand::FPU, 32) { }
 };
+
+struct Bnd : public Reg {
+	explicit Bnd(int idx = 0) : Reg(idx, Operand::BND, 64) { }
+};
+
 
 struct Reg32e : public Reg {
 	explicit Reg32e(int idx, int bit) : Reg(idx, Operand::REG, bit) {}
@@ -1668,6 +1675,7 @@ public:
 	const Reg8 al, cl, dl, bl, ah, ch, dh, bh;
 	const AddressFrame ptr, byte, word, dword, qword;
 	const Fpu st0, st1, st2, st3, st4, st5, st6, st7;
+	const Bnd bnd0, bnd1, bnd2, bnd3;
 #ifdef XBYAK64
 	const Reg64 rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14, r15;
 	const Reg32 r8d, r9d, r10d, r11d, r12d, r13d, r14d, r15d;
@@ -2072,6 +2080,7 @@ public:
 		, al(Operand::AL), cl(Operand::CL), dl(Operand::DL), bl(Operand::BL), ah(Operand::AH), ch(Operand::CH), dh(Operand::DH), bh(Operand::BH)
 		, ptr(0), byte(8), word(16), dword(32), qword(64)
 		, st0(0), st1(1), st2(2), st3(3), st4(4), st5(5), st6(6), st7(7)
+		, bnd0(0), bnd1(1), bnd2(2), bnd3(3)
 #ifdef XBYAK64
 		, rax(Operand::RAX), rcx(Operand::RCX), rdx(Operand::RDX), rbx(Operand::RBX), rsp(Operand::RSP), rbp(Operand::RBP), rsi(Operand::RSI), rdi(Operand::RDI), r8(Operand::R8), r9(Operand::R9), r10(Operand::R10), r11(Operand::R11), r12(Operand::R12), r13(Operand::R13), r14(Operand::R14), r15(Operand::R15)
 		, r8d(Operand::R8D), r9d(Operand::R9D), r10d(Operand::R10D), r11d(Operand::R11D), r12d(Operand::R12D), r13d(Operand::R13D), r14d(Operand::R14D), r15d(Operand::R15D)
@@ -2128,6 +2137,7 @@ namespace util {
 static const Mmx mm0(0), mm1(1), mm2(2), mm3(3), mm4(4), mm5(5), mm6(6), mm7(7);
 static const Xmm xmm0(0), xmm1(1), xmm2(2), xmm3(3), xmm4(4), xmm5(5), xmm6(6), xmm7(7);
 static const Ymm ymm0(0), ymm1(1), ymm2(2), ymm3(3), ymm4(4), ymm5(5), ymm6(6), ymm7(7);
+static const Bnd bnd0(0), bnd1(1), bnd2(2), bnd3(3);
 static const Reg32 eax(Operand::EAX), ecx(Operand::ECX), edx(Operand::EDX), ebx(Operand::EBX), esp(Operand::ESP), ebp(Operand::EBP), esi(Operand::ESI), edi(Operand::EDI);
 static const Reg16 ax(Operand::AX), cx(Operand::CX), dx(Operand::DX), bx(Operand::BX), sp(Operand::SP), bp(Operand::BP), si(Operand::SI), di(Operand::DI);
 static const Reg8 al(Operand::AL), cl(Operand::CL), dl(Operand::DL), bl(Operand::BL), ah(Operand::AH), ch(Operand::CH), dh(Operand::DH), bh(Operand::BH);
