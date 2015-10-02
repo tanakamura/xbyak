@@ -361,7 +361,8 @@ public:
 		XMM = 1 << 4,
 		YMM = 1 << 5,
 		ZMM = 1 << 6,
-		OPMASK = 1 << 7
+		OPMASK = 1 << 7,
+		BND = 1 << 8
 	};
 	enum Code {
 #ifdef XBYAK64
@@ -395,6 +396,7 @@ public:
 	bool isYMEM() const { return is(YMM | MEM); }
 	bool isZMEM() const { return is(ZMM | MEM); }
 	bool isOPMASK() const { return is(OPMASK); }
+	bool isBND() const { return is(BND); }
 	bool isREG(int bit = 0) const { return is(REG, bit); }
 	bool isMEM(int bit = 0) const { return is(MEM, bit); }
 	bool isFPU() const { return is(FPU); }
@@ -568,6 +570,11 @@ template<class T>T operator|(const T& x, const EvexModifierRounding& emr) { T r(
 struct Fpu : public Reg {
 	explicit Fpu(int idx = 0) : Reg(idx, Operand::FPU, 32) { }
 };
+
+struct Bnd : public Reg {
+	explicit Bnd(int idx = 0) : Reg(idx, Operand::BND, 64) { }
+};
+
 
 struct Reg32e : public Reg {
 	explicit Reg32e(int idx, int bit) : Reg(idx, Operand::REG, bit) {}
@@ -2012,6 +2019,7 @@ public:
 	const Opmask k0, k1, k2, k3, k4, k5, k6, k7;
 	const EvexModifierRounding T_sae, T_rn_sae, T_rd_sae, T_ru_sae, T_rz_sae; // {sae}, {rn-sae}, {rd-sae}, {ru-sae}, {rz-sae}
 	const EvexModifierZero T_z; // {z}
+	const Bnd bnd0, bnd1, bnd2, bnd3;
 #ifdef XBYAK64
 	const Reg64 rax, rcx, rdx, rbx, rsp, rbp, rsi, rdi, r8, r9, r10, r11, r12, r13, r14, r15;
 	const Reg32 r8d, r9d, r10d, r11d, r12d, r13d, r14d, r15d;
@@ -2286,6 +2294,7 @@ public:
 		, k0(0), k1(1), k2(2), k3(3), k4(4), k5(5), k6(6), k7(7)
 		, T_sae(T_SAE), T_rn_sae(T_RN_SAE), T_rd_sae(T_RD_SAE), T_ru_sae(T_RU_SAE), T_rz_sae(T_RZ_SAE)
 		, T_z()
+		, bnd0(0), bnd1(1), bnd2(2), bnd3(3)
 #ifdef XBYAK64
 		, rax(Operand::RAX), rcx(Operand::RCX), rdx(Operand::RDX), rbx(Operand::RBX), rsp(Operand::RSP), rbp(Operand::RBP), rsi(Operand::RSI), rdi(Operand::RDI), r8(Operand::R8), r9(Operand::R9), r10(Operand::R10), r11(Operand::R11), r12(Operand::R12), r13(Operand::R13), r14(Operand::R14), r15(Operand::R15)
 		, r8d(8), r9d(9), r10d(10), r11d(11), r12d(12), r13d(13), r14d(14), r15d(15)
@@ -2362,6 +2371,7 @@ static const Mmx mm0(0), mm1(1), mm2(2), mm3(3), mm4(4), mm5(5), mm6(6), mm7(7);
 static const Xmm xmm0(0), xmm1(1), xmm2(2), xmm3(3), xmm4(4), xmm5(5), xmm6(6), xmm7(7);
 static const Ymm ymm0(0), ymm1(1), ymm2(2), ymm3(3), ymm4(4), ymm5(5), ymm6(6), ymm7(7);
 static const Zmm zmm0(0), zmm1(1), zmm2(2), zmm3(3), zmm4(4), zmm5(5), zmm6(6), zmm7(7);
+static const Bnd bnd0(0), bnd1(1), bnd2(2), bnd3(3);
 static const Reg32 eax(Operand::EAX), ecx(Operand::ECX), edx(Operand::EDX), ebx(Operand::EBX), esp(Operand::ESP), ebp(Operand::EBP), esi(Operand::ESI), edi(Operand::EDI);
 static const Reg16 ax(Operand::AX), cx(Operand::CX), dx(Operand::DX), bx(Operand::BX), sp(Operand::SP), bp(Operand::BP), si(Operand::SI), di(Operand::DI);
 static const Reg8 al(Operand::AL), cl(Operand::CL), dl(Operand::DL), bl(Operand::BL), ah(Operand::AH), ch(Operand::CH), dh(Operand::DH), bh(Operand::BH);

@@ -1899,3 +1899,5 @@ void kmovq(const Reg64& r, const Opmask& k) { opVex(r, 0, k, T_L0 | T_0F | T_F2 
 void vpbroadcastq(const Xmm& x, const Reg64& r) { opVex(x, 0, r, T_66 | T_0F38 | T_EW1 | T_YMM | T_MUST_EVEX | T_N8, 0x7C); }
 #endif
 #endif
+void bndcu(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1a); }
+
