@@ -1899,6 +1899,28 @@ void kmovq(const Reg64& r, const Opmask& k) { opVex(r, 0, k, T_L0 | T_0F | T_F2 
 void vpbroadcastq(const Xmm& x, const Reg64& r) { opVex(x, 0, r, T_66 | T_0F38 | T_EW1 | T_YMM | T_MUST_EVEX | T_N8, 0x7C); }
 #endif
 #endif
+<<<<<<< HEAD
+=======
+void andn(const Reg32e& r1, const Reg32e& r2, const Operand& op) { opGpr(r1, r2, op, MM_0F38, 0xf2, true); }
+void mulx(const Reg32e& r1, const Reg32e& r2, const Operand& op) { opGpr(r1, r2, op, MM_0F38 | PP_F2, 0xf6, true); }
+void pdep(const Reg32e& r1, const Reg32e& r2, const Operand& op) { opGpr(r1, r2, op, MM_0F38 | PP_F2, 0xf5, true); }
+void pext(const Reg32e& r1, const Reg32e& r2, const Operand& op) { opGpr(r1, r2, op, MM_0F38 | PP_F3, 0xf5, true); }
+void bextr(const Reg32e& r1, const Operand& op, const Reg32e& r2) { opGpr(r1, op, r2, MM_0F38, 0xf7, false); }
+void bzhi(const Reg32e& r1, const Operand& op, const Reg32e& r2) { opGpr(r1, op, r2, MM_0F38, 0xf5, false); }
+void sarx(const Reg32e& r1, const Operand& op, const Reg32e& r2) { opGpr(r1, op, r2, MM_0F38 | PP_F3, 0xf7, false); }
+void shlx(const Reg32e& r1, const Operand& op, const Reg32e& r2) { opGpr(r1, op, r2, MM_0F38 | PP_66, 0xf7, false); }
+void shrx(const Reg32e& r1, const Operand& op, const Reg32e& r2) { opGpr(r1, op, r2, MM_0F38 | PP_F2, 0xf7, false); }
+void blsi(const Reg32e& r, const Operand& op) { opGpr(Reg32e(3, r.getBit()), op, r, MM_0F38, 0xf3, false); }
+void blsmsk(const Reg32e& r, const Operand& op) { opGpr(Reg32e(2, r.getBit()), op, r, MM_0F38, 0xf3, false); }
+void blsr(const Reg32e& r, const Operand& op) { opGpr(Reg32e(1, r.getBit()), op, r, MM_0F38, 0xf3, false); }
+void vgatherdpd(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x92, 1, 0); }
+void vgatherqpd(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x93, 1, 1); }
+void vgatherdps(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x92, 0, 1); }
+void vgatherqps(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x93, 0, 2); }
+void vpgatherdd(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x90, 0, 1); }
+void vpgatherqd(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x91, 0, 2); }
+void vpgatherdq(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x90, 1, 0); }
+void vpgatherqq(const Xmm& x1, const Address& addr, const Xmm& x2) { opGather(x1, addr, x2, MM_0F38 | PP_66, 0x91, 1, 1); }
 void bndcu(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1a); }
 void bndcl(const Bnd& bnd0, const Operand &op) { db(0xf2); opModRM(bnd0, op, op.isREG(), op.isMEM(), 0x0f, 0x1b); }
 void bndmk(const Bnd& bnd0, const Address &addr) { db(0xf3); opModRM(bnd0, addr, false, true, 0x0f, 0x1b); }
